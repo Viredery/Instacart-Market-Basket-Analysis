@@ -32,4 +32,4 @@ if __name__ == '__main__':
     prod_vector_feat = embedding.return_dataframe(name='product')
 
     pickle_dump(prod_vector_feat, '{}/product_vector_feat.pkl'.format(config.feat_folder))
-    print('Done - product vector features')
+    print('Done - product_vector features')

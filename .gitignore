@@ -1,0 +1,5 @@
+/data/raw/*
+/data/processed/*
+/feat/*
+.DS_Store
+*Untitled.ipynb
