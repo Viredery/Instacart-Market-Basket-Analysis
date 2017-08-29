@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     user_feat['user_reorder_ratio'] = order_products_prior.groupby('user_id').reordered.sum() / \
             order_products_prior[order_products_prior.order_number != 1].groupby('user_id').size()
-    
+
     user_feat['user_department_num'] = order_products_prior.groupby('user_id').department_id.nunique()
     user_feat['user_aisle_num'] = order_products_prior.groupby('user_id').aisle_id.nunique()
 
@@ -30,4 +30,4 @@ if __name__ == '__main__':
              'user_average_product_num', 'user_distinct_product_num', 'user_reorder_ratio',
              'user_department_num', 'user_aisle_num']
     pickle_dump(user_feat[feats], '{}/user_feat.csv'.format(config.feat_folder))
-    print('Done - product user features')
+    print('Done - user features')

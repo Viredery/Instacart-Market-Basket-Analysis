@@ -25,11 +25,11 @@ if __name__ == '__main__':
     print('Generating sentences...')
     product_sentences = gen_product_sentences()
 
-    print('Generating product vector features...')
+    print('Generating product_vector features...')
     embedding = Embedding(product_sentences)
     embedding.word_to_vector(size=100, window=5, min_count=2)
     embedding.reduce_dimension(n_components=2)
-    prod_vector_feat = embedding.return_dataframe(name='product')
+    prod_vector_feat = embedding.return_dataframe(name='product_id')
 
     pickle_dump(prod_vector_feat, '{}/product_vector_feat.pkl'.format(config.feat_folder))
     print('Done - product_vector features')
