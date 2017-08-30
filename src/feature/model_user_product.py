@@ -24,7 +24,8 @@ if __name__ == '__main__':
     up_feat['up_first_order_days'] = order_products_prior.groupby(['user_id', 'product_id']).order_days_before_last_order.max()
     up_feat['up_last_order_days'] = order_products_prior.groupby(['user_id', 'product_id']).order_days_before_last_order.min()
     up_feat['up_average_order_days'] = order_products_prior.groupby(['user_id', 'product_id']).order_days_before_last_order.mean()
-    up_feat['up_average_order_days_distance'] = (up_feat['up_first_order_days'] - up_feat['up_last_order_days']) / (up_feat['up_order_num'] - 1)
+    up_feat['up_average_order_days_distance'] = (up_feat['up_first_order_days'] - up_feat['up_last_order_days']) \
+            / (up_feat['up_order_num'] - 1)
     up_feat['up_order_days_skew'] =  up_feat['up_last_order_days'] / up_feat['up_average_order_days']
 
     up_feat['up_last_order_days_ratio'] = up_feat['up_last_order_days'] / up_feat['up_average_order_days_distance']
@@ -33,8 +34,9 @@ if __name__ == '__main__':
     # Fillna
     up_feat['up_average_order_distance'].fillna(999, inplace=True)
     up_feat['up_average_order_days_distance'].fillna(999, inplace=True)
+    up_feat['up_order_days_skew'].fillna(1, inplace=True)
     # these fetures still have null values:
-    #     up_order_days_skew, up_last_order_days_ratio, up_last_order_days_diff
+    #     up_last_order_days_ratio, up_last_order_days_diff
 
 
     feats = ['up_order_num', 'up_average_add_to_cart_order', 'up_first_order', 'up_last_order', 'up_average_order',

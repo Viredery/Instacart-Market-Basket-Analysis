@@ -13,9 +13,9 @@ def gen_product_sentences():
     order_products_prior["product_id"] = order_products_prior["product_id"].astype(str)
 
     product_sentences_train = order_products_train.sort_values(['order_id', 'add_to_cart_order']).groupby(
-        'order_id').apply(lambda order: order['product_id'].tolist())
+            'order_id').apply(lambda order: order['product_id'].tolist())
     product_sentences_prior = order_products_prior.sort_values(['order_id', 'add_to_cart_order']).groupby(
-        'order_id').apply(lambda order: order['product_id'].tolist())
+            'order_id').apply(lambda order: order['product_id'].tolist())
 
     product_sentences = product_sentences_prior.append(product_sentences_train).values
 
