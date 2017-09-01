@@ -4,7 +4,6 @@ import pandas as pd
 from param_config import config
 from utils import pickle_load, pickle_dump
 
-
 if __name__ == '__main__':
     print('Generating user_product features...')
     order_products_prior = pickle_load(config.order_products_prior_path)
