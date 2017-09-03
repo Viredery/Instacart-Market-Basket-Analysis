@@ -1,6 +1,6 @@
-/data/raw/*
-/data/processed/*
-/feat/*
+/data/raw/*.csv
+/data/processed/*.pkl
+/feat/*.pkl
 .DS_Store
 *Untitled.ipynb
 *.ipynb_checkpoints

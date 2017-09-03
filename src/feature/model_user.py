@@ -13,6 +13,7 @@ if __name__ == '__main__':
 
     user_feat = pd.DataFrame()
     user_feat['user_order_num'] = orders[orders.eval_set == 'prior'].groupby('user_id')['order_number'].max()
+    user_feat['user_order_days'] = orders[orders.eval_set == 'prior'].groupby('user_id')['order_days_since_prior_order'].sum()
     user_feat['user_average_days_since_prior_order'] = orders[orders.eval_set == 'prior'].groupby(
             'user_id')['order_days_since_prior_order'].mean()
 
@@ -26,8 +27,8 @@ if __name__ == '__main__':
     user_feat['user_department_num'] = order_products_prior.groupby('user_id')['department_id'].nunique()
     user_feat['user_aisle_num'] = order_products_prior.groupby('user_id')['aisle_id'].nunique()
 
-    feats = ['user_order_num', 'user_average_days_since_prior_order', 'user_total_product_num',
+    feats = ['user_order_num', 'user_order_days', 'user_average_days_since_prior_order', 'user_total_product_num',
              'user_average_product_num', 'user_distinct_product_num', 'user_reorder_ratio',
              'user_department_num', 'user_aisle_num']
-    pickle_dump(user_feat[feats], '{}/user_feat.csv'.format(config.feat_folder))
+    pickle_dump(user_feat[feats], '{}/user_feat.pkl'.format(config.feat_folder))
     print('Done - user features')

@@ -30,5 +30,5 @@ if __name__ == '__main__':
              'product_first_order_num', 'product_first_reorder_num', 'product_reorder_ratio',
              'product_average_user_reorder_num', 'product_average_add_to_cart_order']
 
-    pickle_dump(product_feat[feats], '{}/product_feat.csv'.format(config.feat_folder))
+    pickle_dump(product_feat[feats], '{}/product_feat.pkl'.format(config.feat_folder))
     print('Done - product features')

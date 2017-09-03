@@ -34,7 +34,7 @@ class Embedding(object):
             return
         col_len = self.word_embedding.shape[1]
         col_names = [name] + ['{}_vector_{}'.format(name, i) for i in range(1, col_len)]
-        return pd.DataFrame(self.word_embedding, columns=col_names)
+        return pd.DataFrame(self.word_embedding, columns=col_names).set_index(name)
 
 
 class MacOSFile(object):
