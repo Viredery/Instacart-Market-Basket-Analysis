@@ -22,4 +22,4 @@ python3 construct_dataset_features.py
 cd ..
 cd model
 
-python3 lightbgm_classifier.py #shuffle
+python3 train_model.py

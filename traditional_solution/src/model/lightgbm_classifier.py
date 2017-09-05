@@ -34,9 +34,9 @@ class LightgbmClassifier(object):
         self.early_stopping_rounds = early_stopping_rounds
 
     def train_holdout(self, test_size=0.25, shuffle=False, stratify=None):
-        print('Fitting 75 percent of train set...')
+        print('Fitting the partial train set...')
         x_train, x_valid, y_train, y_valid = train_test_split(self.x, self.y, 
-                test_size=0.25, shuffle=False, stratify=None, random_state=self.random_state)
+                test_size=0.25, shuffle=False, stratify=stratify, random_state=self.random_state)
         d_train = lgb.Dataset(x_train, label=y_train, categorical_feature=self.categorical_feature_name)
         d_valid = lgb.Dataset(x_valid, label=y_valid, categorical_feature=self.categorical_feature_name)
 
@@ -49,6 +49,8 @@ class LightgbmClassifier(object):
         print('Done')
 
     def predict(self):
+        if self.model == None:
+            return
         y_test_pred = self.model.predict(self.x_test)
         return y_test_pred
 

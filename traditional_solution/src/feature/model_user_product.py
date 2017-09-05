@@ -1,6 +1,8 @@
+import sys
 import numpy as np
 import pandas as pd
 
+sys.path.append('../')
 from param_config import config
 from utils import pickle_load, pickle_dump
 

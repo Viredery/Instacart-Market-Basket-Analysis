@@ -1,6 +1,8 @@
+import sys
 import numpy as np
 import pandas as pd
 
+sys.path.append('../')
 from param_config import config
 from utils import pickle_load, pickle_dump
 
@@ -50,7 +52,7 @@ if __name__ == '__main__':
     x_train_feat = merge_features(x_train)
     x_test_feat = merge_features(x_test)
 
-    pickle_dump(x_train_feat, '{}/x_train_feat.pkl'.format(config.data_folder))
-    pickle_dump(x_test_feat, '{}/x_test_feat.pkl'.format(config.data_folder))
+    pickle_dump(x_train_feat, '{}/x_train_feat.pkl'.format(config.output_folder))
+    pickle_dump(x_test_feat, '{}/x_test_feat.pkl'.format(config.output_folder))
     print('Done')
 

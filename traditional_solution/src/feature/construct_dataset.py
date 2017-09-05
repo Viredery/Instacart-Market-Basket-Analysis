@@ -1,6 +1,8 @@
+import sys
 import numpy as np
 import pandas as pd
 
+sys.path.append('../')
 from param_config import config
 from utils import pickle_load, pickle_dump
 
@@ -27,7 +29,7 @@ if __name__ == '__main__':
     
     x_test = test_df
     
-    pickle_dump(x_train, '{}/x_train.pkl'.format(config.data_folder))
-    pickle_dump(y_train, '{}/y_train.pkl'.format(config.data_folder))
-    pickle_dump(x_test, '{}/x_test.pkl'.format(config.data_folder))
+    pickle_dump(x_train, '{}/x_train.pkl'.format(config.output_folder))
+    pickle_dump(y_train, '{}/y_train.pkl'.format(config.output_folder))
+    pickle_dump(x_test, '{}/x_test.pkl'.format(config.output_folder))
     print('Done - dataset construction')
