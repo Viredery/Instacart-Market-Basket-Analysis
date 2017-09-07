@@ -29,7 +29,7 @@ class Xgboost_Ensemble(object):
     def train(self, test_size=0.25, shuffle=False, stratify=None)
         print('Fitting the partial train set...')
         x_train, x_valid, y_train, y_valid = train_test_split(self.x, self.y, 
-                test_size=0.25, shuffle=False, stratify=stratify, random_state=self.random_state)
+                test_size=test_size, shuffle=shuffle, stratify=stratify, random_state=self.random_state)
 
         xg_train = xgb.DMatrix(x_train, label=y_train)
         xg_valid = xgb.DMatrix(x_valid, label=y_valid)

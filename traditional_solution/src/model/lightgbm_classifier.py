@@ -10,10 +10,10 @@ class LightgbmClassifier(object):
     def __init__(self, random_state):
         self.random_state = random_state
 
-    def set_dataset(self, x_train, y_train, x_test, feature_name=None, categorical_feature_name=None):
-        self.x = x_train[feature_name] if feature_name != None else x_train
+    def set_dataset(self, x, y, x_test, feature_name=None, categorical_feature_name=None):
+        self.x = x[feature_name] if feature_name != None else x
         self.x_test = x_test[feature_name] if feature_name != None else x_test
-        self.y = y_train
+        self.y = y
 
         self.categorical_feature_name = categorical_feature_name
 
@@ -36,7 +36,7 @@ class LightgbmClassifier(object):
     def train_holdout(self, test_size=0.25, shuffle=False, stratify=None):
         print('Fitting the partial train set...')
         x_train, x_valid, y_train, y_valid = train_test_split(self.x, self.y, 
-                test_size=0.25, shuffle=False, stratify=stratify, random_state=self.random_state)
+                test_size=test_size, shuffle=shuffle, stratify=stratify, random_state=self.random_state)
         d_train = lgb.Dataset(x_train, label=y_train, categorical_feature=self.categorical_feature_name)
         d_valid = lgb.Dataset(x_valid, label=y_valid, categorical_feature=self.categorical_feature_name)
 
@@ -50,16 +50,16 @@ class LightgbmClassifier(object):
 
     def predict(self):
         if self.model == None:
-            return
+            return None
         y_test_pred = self.model.predict(self.x_test)
         return y_test_pred
 
     def cv_to_ensemble(self, n_splits=5, shuffle=False):
-        y_train_score = np.zeros(self.x.shape[0])
-        y_test_score = np.zeros((self.x_test.shape[0], n_splits))
+        y_train_pred = np.zeros(self.x.shape[0])
+        y_test_pred = np.zeros((self.x_test.shape[0], n_splits))
 
         kf = KFold(n_splits=n_splits, shuffle=shuffle, random_state=self.random_state)
-        for i, train_idx, valid_idx in enumerate(kf.split(X, y)):
+        for i, (train_idx, valid_idx) in enumerate(kf.split(self.x, self.y)):
             print('CV: {}/{}...'.format(i+1, n_splits))
             x_train, x_valid = self.x.values[train_idx], self.x.values[valid_idx]
             y_train, y_valid = self.y[train_idx], self.y[valid_idx]
@@ -70,10 +70,10 @@ class LightgbmClassifier(object):
             model = lgb.train(self.params, d_train, self.num_round, valid_sets=d_valid,
                               early_stopping_rounds=self.early_stopping_rounds, verbose_eval=10)
             y_train_score = model.predict(d_valid, num_iteration=model.best_iteration)
-            y_train_pred[valid_idx] = y_train_pred
+            y_train_pred[valid_idx] = y_train_score
 
             y_test_score = model.predict(self.x_test, num_iteration=model.best_iteration)
-            y_test_pred[:, i] = y_test_pred
+            y_test_pred[:, i] = y_test_score
         print('Done')
         return y_train_pred, np.mean(y_test_pred, axis=1)
 

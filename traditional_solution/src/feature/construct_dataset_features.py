@@ -11,8 +11,8 @@ if __name__ == '__main__':
     print('Merging total features into train/test dataset...')
 
     print('Loading train/test dataset...')
-    x_train = pickle_load('{}/x_train.pkl'.format(config.data_folder))
-    x_test = pickle_load('{}/x_test.pkl'.format(config.data_folder))
+    x_train = pickle_load('{}/x_train.pkl'.format(config.output_folder))
+    x_test = pickle_load('{}/x_test.pkl'.format(config.output_folder))
 
     print('Loading features...')
     products = pickle_load(config.products_path)

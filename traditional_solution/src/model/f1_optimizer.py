@@ -62,3 +62,20 @@ class F1Optimizer():
     def _Fbeta(tp, fp, fn, beta=1.0):
         beta_squared = beta ** 2
         return (1.0 + beta_squared) * tp / ((1.0 + beta_squared) * tp + fp + beta_squared * fn)
+
+def create_products_faron(df):
+    products = df.product_id.values
+    prob = df.pred.values
+
+    sort_index = np.argsort(prob)[::-1]
+    prob = prob[sort_index]
+    products = products[sort_index]
+
+    opt = F1Optimizer.maximize_expectation(prob)
+    
+    best_prediction = ['None'] if opt[1] else []
+    best_prediction += [str(p) for p in products[:opt[0]]]
+    f1_max = opt[2]
+
+    best = ' '.join(best_prediction)
+    return (df.iloc[0,0], best)
