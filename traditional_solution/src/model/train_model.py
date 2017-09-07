@@ -62,14 +62,14 @@ if __name__ == '__main__':
     lc.set_parameters(boosting_type='gbdt',
                       objective='binary',
                       metric='binary_logloss', 
-                      learning_rate=0.03, 
+                      learning_rate=0.1, 
                       num_leaves=205, 
                       max_depth=15, 
                       feature_fraction=0.9, 
                       bagging_fraction=0.7, 
                       bagging_freq=5, 
                       num_round=10000, 
-                      early_stopping_rounds=100)
+                      early_stopping_rounds=50)
 
     y_train_pred, y_test_pred = lc.cv_to_ensemble()
 

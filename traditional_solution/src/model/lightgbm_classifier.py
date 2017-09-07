@@ -69,7 +69,7 @@ class LightgbmClassifier(object):
 
             model = lgb.train(self.params, d_train, self.num_round, valid_sets=d_valid,
                               early_stopping_rounds=self.early_stopping_rounds, verbose_eval=10)
-            y_train_score = model.predict(d_valid, num_iteration=model.best_iteration)
+            y_train_score = model.predict(x_valid, num_iteration=model.best_iteration)
             y_train_pred[valid_idx] = y_train_score
 
             y_test_score = model.predict(self.x_test, num_iteration=model.best_iteration)
