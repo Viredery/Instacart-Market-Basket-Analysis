@@ -33,7 +33,7 @@ class LightgbmClassifier(object):
         self.num_round = num_round
         self.early_stopping_rounds = early_stopping_rounds
 
-    def train_holdout(self, test_size=0.25, shuffle=False, stratify=None):
+    def fit(self, test_size=0.25, shuffle=False, stratify=None):
         print('Fitting the partial train set...')
         x_train, x_valid, y_train, y_valid = train_test_split(self.x, self.y, 
                 test_size=test_size, shuffle=shuffle, stratify=stratify, random_state=self.random_state)
