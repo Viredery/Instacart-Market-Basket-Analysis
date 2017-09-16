@@ -35,12 +35,12 @@ class LightgbmClassifier(object):
 
     def fit(self, test_size=0.25, shuffle=False, stratify=None):
         print('Fitting the partial train set...')
-        x_train, x_valid, y_train, y_valid = train_test_split(self.x, self.y, 
+        x_train, x_val, y_train, y_val = train_test_split(self.x, self.y, 
                 test_size=test_size, shuffle=shuffle, stratify=stratify, random_state=self.random_state)
         d_train = lgb.Dataset(x_train, label=y_train, categorical_feature=self.categorical_feature_name)
-        d_valid = lgb.Dataset(x_valid, label=y_valid, categorical_feature=self.categorical_feature_name)
+        d_val = lgb.Dataset(x_val, label=y_val, categorical_feature=self.categorical_feature_name)
 
-        model = lgb.train(self.params, d_train, self.num_round, valid_sets=d_valid,
+        model = lgb.train(self.params, d_train, self.num_round, val_sets=d_val,
                           early_stopping_rounds=self.early_stopping_rounds, verbose_eval=10)        
         print('Fitting the entire train set...')
         rounds = model.best_iteration
@@ -59,18 +59,18 @@ class LightgbmClassifier(object):
         y_test_pred = np.zeros((self.x_test.shape[0], n_splits))
 
         kf = KFold(n_splits=n_splits, shuffle=shuffle, random_state=self.random_state)
-        for i, (train_idx, valid_idx) in enumerate(kf.split(self.x, self.y)):
+        for i, (train_idx, val_idx) in enumerate(kf.split(self.x, self.y)):
             print('CV: {}/{}...'.format(i+1, n_splits))
-            x_train, x_valid = self.x.values[train_idx], self.x.values[valid_idx]
-            y_train, y_valid = self.y[train_idx], self.y[valid_idx]
+            x_train, x_val = self.x.values[train_idx], self.x.values[val_idx]
+            y_train, y_val = self.y[train_idx], self.y[val_idx]
 
             d_train = lgb.Dataset(x_train, label=y_train, categorical_feature=self.categorical_feature_name)
-            d_valid = lgb.Dataset(x_valid, label=y_valid, categorical_feature=self.categorical_feature_name)
+            d_val = lgb.Dataset(x_val, label=y_val, categorical_feature=self.categorical_feature_name)
 
-            model = lgb.train(self.params, d_train, self.num_round, valid_sets=d_valid,
+            model = lgb.train(self.params, d_train, self.num_round, val_sets=d_val,
                               early_stopping_rounds=self.early_stopping_rounds, verbose_eval=10)
-            y_train_score = model.predict(x_valid, num_iteration=model.best_iteration)
-            y_train_pred[valid_idx] = y_train_score
+            y_train_score = model.predict(x_val, num_iteration=model.best_iteration)
+            y_train_pred[val_idx] = y_train_score
 
             y_test_score = model.predict(self.x_test, num_iteration=model.best_iteration)
             y_test_pred[:, i] = y_test_score

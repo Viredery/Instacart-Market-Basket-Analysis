@@ -21,7 +21,7 @@ class DataFrame(object):
     def __init__(self, columns, data):
         assert len(columns) == len(data)
 
-        lengths = set([mat.shape[0] for mat in data])
+        lengths = list(set([mat.shape[0] for mat in data]))
         assert len(lengths) == 1
 
         self.columns = columns
@@ -53,14 +53,14 @@ class DataFrame(object):
                 batch_idx = self.idx[i : i + batch_size]
                 if not allow_smaller_final_batch and len(batch_idx) != batch_size:
                     break
-                yield DataFrame(copy.copy(columns), [mat[batch_idx] for mat in self.data])
+                yield DataFrame(copy.copy(self.columns), [mat[batch_idx] for mat in self.data])
 
             epoch_num += 1
 
     def train_test_split(self, train_size, random_state=np.random.randint(10000)):
         train_idx, test_idx = train_test_split(self.idx, train_size=train_size, random_state=random_state)
-        train_df = DataFrame(copy.copy(columns), [mat[train_idx] for mat in self.data])
-        test_df = DataFrame(copy.copy(columns), [mat[test_idx] for mat in self.data])
+        train_df = DataFrame(copy.copy(self.columns), [mat[train_idx] for mat in self.data])
+        test_df = DataFrame(copy.copy(self.columns), [mat[test_idx] for mat in self.data])
         return train_df, test_df
 
     def iterrows(self):
